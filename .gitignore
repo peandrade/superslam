@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+package-lock.json
+
+# CSS gerado (build)
+public/style.css
+
+# Build temporário (caso adicione futuramente)
+dist/
+build/
+
+# IDEs e ambiente
+.vscode/
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Cache do Tailwind ou ferramentas
+.npm/
+.cache/
