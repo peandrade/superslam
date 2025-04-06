@@ -1,21 +1,24 @@
-# Node.js
-node_modules/
-
-# CSS gerado (build)
-public/style.css
-
-# Build temporário (caso adicione futuramente)
-dist/
-build/
-
-# IDEs e ambiente
-.vscode/
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Sistema
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-
-# Cache do Tailwind ou ferramentas
-.npm/
-.cache/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
