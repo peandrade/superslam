@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Superslam</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body class="bg-white text-black">
+    <main>
+      <div class="fight-area m-4 flex justify-between">
+        <div id="player" class="w-1/2 p-4">
+          <div class="lifebar mb-2 h-3 rounded-md border border-black">
+            <div
+              class="bar h-full rounded-md transition-[width] duration-500"
+            ></div>
+          </div>
+          <strong class="name mb-2 block">- -</strong>
+          <button
+            class="attackButton rounded bg-blue-900 px-4 py-1 text-white"
+            aria-label="Botão de ataque do jogador"
+          >
+            Atacar
+          </button>
+        </div>
+
+        <div id="enemy" class="w-1/2 p-4">
+          <div class="lifebar mb-2 h-3 rounded-md border border-black">
+            <div
+              class="bar h-full rounded-md transition-[width] duration-500"
+            ></div>
+          </div>
+          <strong class="name mb-2 block">--</strong>
+          <button
+            class="attackButton rounded bg-red-900 px-4 py-1 text-white"
+            aria-label="Botão de ataque do inimigo"
+          >
+            Atacar
+          </button>
+        </div>
+      </div>
+
+      <ul
+        class="log m-4 h-52 overflow-y-scroll rounded border-2 border-dotted border-gray-500 bg-gray-100 p-2 text-center"
+      ></ul>
+    </main>
+
+    <script type="module" src="../src/scripts/scripts.js"></script>
+  </body>
+</html>

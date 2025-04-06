@@ -1,0 +1,40 @@
+name: Pós-merge - Verificação de Código
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  post-merge-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Cache dependências npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 🧪 ESLint - Análise de JavaScript
+        run: npm run lint
+
+      - name: 💅 Prettier - Verificação de formatação
+        run: npm run check:format
+
+      - name: 🛠️ Tailwind Build (produção)
+        run: npx tailwindcss -i ./src/styles/main.css -o ./public/style.css --minify
