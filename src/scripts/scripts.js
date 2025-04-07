@@ -1,7 +1,7 @@
-import { Knight, LittleEnemy, Stage } from './index.js';
+import { Knight, BigEnemy, Stage } from './index.js';
 
 const player = new Knight('Pedro');
-const enemy = new LittleEnemy();
+const enemy = new BigEnemy();
 const battleLog = createBattleLog(document.querySelector('.log'));
 
 const stage = new Stage(
@@ -13,12 +13,19 @@ const stage = new Stage(
 );
 
 function setupControls(stage, player, enemy) {
-  document
-    .querySelector('#player .attackButton')
-    .addEventListener('click', () => stage.doAttack(player, enemy));
-  document
-    .querySelector('#enemy .attackButton')
-    .addEventListener('click', () => stage.doAttack(enemy, player));
+  const playerAttackButton = document.querySelector('#player .attackButton');
+
+  playerAttackButton.addEventListener('click', () => {
+    if (playerAttackButton.disabled) return;
+
+    playerAttackButton.disabled = true;
+    stage.calculateDamage(player, enemy);
+
+    setTimeout(() => {
+      stage.calculateDamage(enemy, player);
+      playerAttackButton.disabled = false;
+    }, 1000);
+  });
 }
 
 function createBattleLog(listElement) {

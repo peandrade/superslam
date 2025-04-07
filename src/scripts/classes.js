@@ -87,7 +87,7 @@ export class Stage {
     this.renderCharacter(this.enemy, this.enemyElement);
   }
 
-  doAttack(attacker, defender) {
+  calculateDamage(attacker, defender) {
     if (!attacker.isAlive() || !defender.isAlive()) {
       this.battleLog.addMessage(
         'Ataque inválido. Um dos personagens já foi derrotado.'
@@ -107,6 +107,11 @@ export class Stage {
       this.battleLog.addMessage(
         `${attacker.name} causou ${damage.toFixed(1)} de dano em ${defender.name}.`
       );
+      if (defender.life <= 0) {
+        this.battleLog.addMessage(
+          `${attacker.name} derrotou ${defender.name}.`
+        );
+      }
     } else {
       this.battleLog.addMessage(`${defender.name} defendeu com sucesso!`);
     }
