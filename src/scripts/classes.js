@@ -1,4 +1,6 @@
 class Character {
+  xp = 0;
+  level = 1;
   #life = 1;
 
   constructor(name, maxLife = 1, attack = 0, defense = 0) {
@@ -19,6 +21,19 @@ class Character {
 
   isAlive() {
     return this.life > 0;
+  }
+
+  gainXP(xpAmount) {
+    this.xp += xpAmount;
+    const nextLevel = this.level * 100;
+
+    if (this.xp >= nextLevel) {
+      this.xp -= nextLevel;
+      this.level++;
+      this.maxLife += 10;
+      this.attack += 2;
+      this.defense += 1;
+    }
   }
 }
 
@@ -62,12 +77,16 @@ export class Stage {
     this.update();
   }
 
-  renderCharacter(character, characterElement) {
+  updateCharacterUI(character, characterElement) {
     const nameElement = characterElement.querySelector('.name');
-    const barElement = characterElement.querySelector('.bar');
+    const barElement = characterElement.querySelector('.lifebar .bar');
+    const lifeElement = characterElement.querySelector('.life');
+    const levelElement = characterElement.querySelector('.level');
 
     const lifePercent = (character.life / character.maxLife) * 100;
-    nameElement.innerHTML = `${character.name} - ${character.life.toFixed(1)} HP`;
+    levelElement.innerHTML = `Level ${character.level}`;
+    nameElement.innerHTML = `${character.name}`;
+    lifeElement.innerHTML = `${character.life} / ${character.maxLife} HP`;
     barElement.style.width = `${lifePercent}%`;
 
     if (lifePercent > 60) {
@@ -83,8 +102,28 @@ export class Stage {
   }
 
   update() {
-    this.renderCharacter(this.player, this.playerElement);
-    this.renderCharacter(this.enemy, this.enemyElement);
+    this.updateCharacterUI(this.player, this.playerElement);
+    this.updateCharacterUI(this.enemy, this.enemyElement);
+    this.updateXPBar(this.player);
+  }
+
+  updateXPBar(character) {
+    if (!this.enemy.isAlive()) {
+      const xpReward = Math.round(this.enemy.attack * 5 + Math.random() * 10);
+      console.log(character);
+      character.gainXP(xpReward);
+      console.log(character);
+
+      const xpPercentage = (character.xp / (character.level * 100)) * 100;
+      const xpBarElement = document.querySelector('.xpbar .bar');
+
+      setTimeout(() => {
+        xpBarElement.className =
+          'bar h-full rounded-md transition-all duration-700 bg-blue-500';
+        xpBarElement.style.width = `${xpPercentage}%`;
+      }, 600);
+      this.battleLog.addMessage(`${character.name} ganhou ${xpReward} de XP!`);
+    }
   }
 
   calculateDamage(attacker, defender) {
@@ -102,10 +141,10 @@ export class Stage {
     const defensePower = defender.defense * defenseFactor;
 
     if (attackPower > defensePower) {
-      const damage = attackPower - defensePower;
+      const damage = Math.round(attackPower - defensePower);
       defender.life -= damage;
       this.battleLog.addMessage(
-        `${attacker.name} causou ${damage.toFixed(1)} de dano em ${defender.name}.`
+        `${attacker.name} causou ${damage} de dano em ${defender.name}.`
       );
       if (defender.life <= 0) {
         this.battleLog.addMessage(
@@ -115,7 +154,32 @@ export class Stage {
     } else {
       this.battleLog.addMessage(`${defender.name} defendeu com sucesso!`);
     }
-
     this.update();
+  }
+
+  bindStatusButton() {
+    document.getElementById('statusBtn').addEventListener('click', () => {
+      const content = `
+        <div><strong>${this.player.name}</strong> (Level ${this.player.level})</div>
+        <div>HP: ${this.player.life} / ${this.player.maxLife}</div>
+        <div>ATK: ${this.player.attack}</div>
+        <div>DEF: ${this.player.defense}</div>
+        <div>XP: ${this.player.xp} / ${this.player.level * 100}</div>
+        <hr class="my-2" />
+        <div><strong>${this.enemy.name}</strong></div>
+        <div>HP: ${this.enemy.life} / ${this.enemy.maxLife}</div>
+        <div>ATK: ${this.enemy.attack}</div>
+        <div>DEF: ${this.enemy.defense}</div>
+      `;
+
+      document.getElementById('statusContent').innerHTML = content;
+      document.getElementById('statusModal').classList.remove('hidden');
+      document.getElementById('statusModal').classList.add('flex');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      document.getElementById('statusModal').classList.add('hidden');
+      document.getElementById('statusModal').classList.remove('flex');
+    });
   }
 }
