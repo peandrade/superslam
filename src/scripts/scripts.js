@@ -1,7 +1,7 @@
-import { Knight, BigEnemy, Stage } from './index.js';
+import { Knight, LittleEnemy, Stage } from './index.js';
 
 const player = new Knight('Pedro');
-const enemy = new BigEnemy();
+const enemy = new LittleEnemy();
 const battleLog = createBattleLog(document.querySelector('.log'));
 
 const stage = new Stage(
@@ -46,3 +46,4 @@ function createBattleLog(listElement) {
 
 setupControls(stage, player, enemy);
 stage.start();
+stage.bindStatusButton();
