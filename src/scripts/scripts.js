@@ -12,17 +12,19 @@ const stage = new Stage(
   battleLog
 );
 
-function setupControls(stage, player, enemy) {
+function setupControls(stage, player) {
   const playerAttackButton = document.querySelector('#player .attackButton');
 
   playerAttackButton.addEventListener('click', () => {
     if (playerAttackButton.disabled) return;
 
     playerAttackButton.disabled = true;
-    stage.calculateDamage(player, enemy);
+    stage.calculateDamage(player, stage.currentEnemy);
 
     setTimeout(() => {
-      stage.calculateDamage(enemy, player);
+      if (stage.currentEnemy.isAlive()) {
+        stage.calculateDamage(stage.currentEnemy, player);
+      }
       playerAttackButton.disabled = false;
     }, 1000);
   });
@@ -44,6 +46,6 @@ function createBattleLog(listElement) {
   return { addMessage };
 }
 
-setupControls(stage, player, enemy);
+setupControls(stage, player);
 stage.start();
 stage.bindStatusButton();

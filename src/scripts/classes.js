@@ -64,6 +64,8 @@ export class BigEnemy extends Character {
 export class Stage {
   static MAX_ATTACK_FACTOR = 2;
   static MAX_DEFENSE_FACTOR = 2;
+  currentHorde = 1;
+  enemiesRemaining = 4;
 
   constructor(player, enemy, playerElement, enemyElement, battleLog) {
     this.player = player;
@@ -71,6 +73,9 @@ export class Stage {
     this.playerElement = playerElement;
     this.enemyElement = enemyElement;
     this.battleLog = battleLog;
+    this.enemies = this.generateHorde();
+    this.currentEnemyIndex = 0;
+    this.currentEnemy = this.enemies[this.currentEnemyIndex];
   }
 
   start() {
@@ -103,13 +108,16 @@ export class Stage {
 
   update() {
     this.updateCharacterUI(this.player, this.playerElement);
-    this.updateCharacterUI(this.enemy, this.enemyElement);
+    this.updateCharacterUI(this.currentEnemy, this.enemyElement);
     this.updateXPBar(this.player);
+    this.updateHordeInfo();
   }
 
   updateXPBar(character) {
-    if (!this.enemy.isAlive()) {
-      const xpReward = Math.round(this.enemy.attack * 5 + Math.random() * 10);
+    if (!this.currentEnemy.isAlive()) {
+      const xpReward = Math.round(
+        this.currentEnemy.attack * 5 + Math.random() * 10
+      );
       console.log(character);
       character.gainXP(xpReward);
       console.log(character);
@@ -150,6 +158,17 @@ export class Stage {
         this.battleLog.addMessage(
           `${attacker.name} derrotou ${defender.name}.`
         );
+        if (defender === this.currentEnemy) {
+          const enemyElement = this.enemyElement;
+
+          enemyElement.classList.add('opacity-0', 'pointer-events-none');
+
+          setTimeout(() => {
+            this.nextEnemy();
+            this.update();
+            enemyElement.classList.remove('opacity-0', 'pointer-events-none');
+          }, 1500);
+        }
       }
     } else {
       this.battleLog.addMessage(`${defender.name} defendeu com sucesso!`);
@@ -165,11 +184,6 @@ export class Stage {
         <div>ATK: ${this.player.attack}</div>
         <div>DEF: ${this.player.defense}</div>
         <div>XP: ${this.player.xp} / ${this.player.level * 100}</div>
-        <hr class="my-2" />
-        <div><strong>${this.enemy.name}</strong></div>
-        <div>HP: ${this.enemy.life} / ${this.enemy.maxLife}</div>
-        <div>ATK: ${this.enemy.attack}</div>
-        <div>DEF: ${this.enemy.defense}</div>
       `;
 
       document.getElementById('statusContent').innerHTML = content;
@@ -181,5 +195,34 @@ export class Stage {
       document.getElementById('statusModal').classList.add('hidden');
       document.getElementById('statusModal').classList.remove('flex');
     });
+  }
+
+  generateHorde() {
+    const horde = [];
+
+    for (let i = 0; i < 4; i++) {
+      horde.push(new Character(`Inimigo ${i + 1}`, 10, 4, 4));
+    }
+
+    return horde;
+  }
+
+  nextEnemy() {
+    this.currentEnemyIndex++;
+    if (this.currentEnemyIndex >= this.enemies.length) {
+      this.enemies = this.generateHorde();
+      this.currentEnemyIndex = 0;
+      this.currentEnemy = this.enemies[0];
+    } else {
+      this.currentEnemy = this.enemies[this.currentEnemyIndex];
+    }
+    this.battleLog.addMessage(`${this.currentEnemy.name} entrou em campo.`);
+    this.updateHordeInfo();
+  }
+  updateHordeInfo() {
+    document.getElementById('hordeNumber').textContent =
+      `Horda ${this.currentHorde}`;
+    document.getElementById('enemiesLeft').textContent =
+      `Inimigos restantes: ${this.enemies.length - this.currentEnemyIndex}`;
   }
 }

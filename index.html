@@ -8,7 +8,7 @@
 
   <body class="bg-white text-black">
     <main>
-      <div class="fight-area m-4 flex justify-between">
+      <div class="fight-area m-2 flex justify-between">
         <div id="player" class="w-1/2 p-4">
           <div class="flex justify-between">
             <strong class="name">--</strong>
@@ -48,7 +48,7 @@
             class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
           >
             <div class="bg-white p-6 rounded shadow-xl w-96">
-              <h2 class="text-xl font-bold mb-4">Status dos Personagens</h2>
+              <h2 class="text-xl font-bold mb-4">Status do Personagem</h2>
               <div id="statusContent" class="space-y-2 text-sm"></div>
               <button
                 id="closeModal"
@@ -61,7 +61,10 @@
           </div>
         </div>
 
-        <div id="enemy" class="w-1/2 p-4">
+        <div
+          id="enemy"
+          class="w-1/2 p-4 transition-opacity duration-500 opacity-100"
+        >
           <div class="flex justify-between">
             <strong class="name">--</strong>
             <strong class="life">--</strong>
@@ -74,7 +77,10 @@
           <div class="level flex justify-end">--</div>
         </div>
       </div>
-
+      <div class="horde-info text-sm flex items-center flex-col">
+        <div id="hordeNumber">Horda 1</div>
+        <div id="enemiesLeft">Inimigos restantes: 4</div>
+      </div>
       <ul
         class="log m-4 h-52 overflow-y-scroll rounded border-2 border-dotted border-gray-500 bg-gray-100 p-2 text-center"
       ></ul>
