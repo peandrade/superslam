@@ -30,6 +30,7 @@
             </div>
             <div class="level">--</div>
           </div>
+          <div class="coins text-right text-sm font-bold">Moedas: 0</div>
           <button
             class="attackButton rounded bg-blue-900 px-4 py-1 text-white"
             aria-label="Botão de ataque do jogador"
@@ -54,6 +55,56 @@
                 id="closeModal"
                 class="mt-4 text-sm text-blue-600 hover:underline"
                 aria-label="Fechar modal de status"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="mt-4 space-x-2">
+            <button
+              id="shopBtn"
+              class="bg-yellow-500 text-white px-4 py-1 rounded"
+            >
+              Loja
+            </button>
+            <button
+              id="bagBtn"
+              class="bg-green-500 text-white px-4 py-1 rounded"
+            >
+              Mochila
+            </button>
+          </div>
+
+          <!-- Modal da Loja -->
+          <div
+            id="shopModal"
+            class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-xl w-96">
+              <h2 class="text-xl font-bold mb-4">Loja de Itens</h2>
+              <ul id="shopItems" class="space-y-2 text-sm"></ul>
+              <button
+                id="closeShop"
+                class="mt-4 text-sm text-blue-600 hover:underline"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+
+          <!-- Modal da Mochila -->
+          <div
+            id="bagModal"
+            class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-xl w-96">
+              <h2 class="text-xl font-bold mb-4">Mochila</h2>
+              <ul id="bagItems" class="space-y-2 text-sm"></ul>
+              <button
+                id="closeBag"
+                class="mt-4 text-sm text-blue-600 hover:underline"
               >
                 Fechar
               </button>

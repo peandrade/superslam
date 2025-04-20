@@ -2,6 +2,7 @@ class Character {
   xp = 0;
   level = 1;
   #life = 1;
+  coins = 0;
 
   constructor(name, maxLife = 1, attack = 0, defense = 0) {
     this.name = name;
@@ -104,12 +105,19 @@ export class Stage {
       barElement.classList.remove('bg-green-500', 'bg-yellow-400');
       barElement.classList.add('bg-red-600');
     }
+
+    const coinsElement = characterElement.querySelector('.coins');
+    if (coinsElement) {
+      coinsElement.textContent = `Moedas: ${character.coins}`;
+    }
   }
 
   update() {
     this.updateCharacterUI(this.player, this.playerElement);
     this.updateCharacterUI(this.currentEnemy, this.enemyElement);
-    this.updateXPBar(this.player);
+    if (!this.currentEnemy.isAlive()) {
+      this.updateXPBar(this.player);
+    }
     this.updateHordeInfo();
   }
 
@@ -131,6 +139,12 @@ export class Stage {
         xpBarElement.style.width = `${xpPercentage}%`;
       }, 600);
       this.battleLog.addMessage(`${character.name} ganhou ${xpReward} de XP!`);
+
+      const coinsReward = Math.floor(Math.random() * 10) + 5;
+      character.coins += coinsReward;
+      this.battleLog.addMessage(
+        `${character.name} recebeu ${coinsReward} moedas!`
+      );
     }
   }
 
@@ -184,6 +198,7 @@ export class Stage {
         <div>ATK: ${this.player.attack}</div>
         <div>DEF: ${this.player.defense}</div>
         <div>XP: ${this.player.xp} / ${this.player.level * 100}</div>
+        <div>Moedas: ${this.player.coins}</div>
       `;
 
       document.getElementById('statusContent').innerHTML = content;
@@ -201,7 +216,7 @@ export class Stage {
     const horde = [];
 
     for (let i = 0; i < 4; i++) {
-      horde.push(new Character(`Inimigo ${i + 1}`, 10, 4, 4));
+      horde.push(new Character(`Inimigo ${i + 1}`, 70, 6, 5));
     }
 
     return horde;
@@ -210,6 +225,7 @@ export class Stage {
   nextEnemy() {
     this.currentEnemyIndex++;
     if (this.currentEnemyIndex >= this.enemies.length) {
+      this.currentHorde++;
       this.enemies = this.generateHorde();
       this.currentEnemyIndex = 0;
       this.currentEnemy = this.enemies[0];
