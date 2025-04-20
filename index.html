@@ -8,32 +8,130 @@
 
   <body class="bg-white text-black">
     <main>
-      <div class="fight-area m-4 flex justify-between">
+      <div class="fight-area m-2 flex justify-between">
         <div id="player" class="w-1/2 p-4">
-          <div class="lifebar mb-2 h-3 rounded-md border border-black">
+          <div class="flex justify-between">
+            <strong class="name">--</strong>
+            <strong class="life">--</strong>
+          </div>
+          <div class="lifebar h-3 rounded-md border border-black">
             <div
               class="bar h-full rounded-md transition-[width] duration-500"
             ></div>
           </div>
-          <strong class="name mb-2 block">- -</strong>
+          <div class="flex justify-between items-center">
+            <div
+              class="xpbar h-2 rounded-md overflow-hidden border border-black w-1/3"
+            >
+              <div
+                class="bar h-full rounded-md transition-all duration-700 bg-blue-500"
+                style="width: 0%"
+              ></div>
+            </div>
+            <div class="level">--</div>
+          </div>
+          <div class="coins text-right text-sm font-bold">Moedas: 0</div>
           <button
             class="attackButton rounded bg-blue-900 px-4 py-1 text-white"
             aria-label="Botão de ataque do jogador"
           >
             Atacar
           </button>
+          <button id="statusBtn" class="rounded-md bg-slate-300 px-4 py-1 ml-2">
+            Status
+          </button>
+
+          <!-- Modal -->
+          <div
+            id="statusModal"
+            role="dialog"
+            aria-modal="true"
+            class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-xl w-96">
+              <h2 class="text-xl font-bold mb-4">Status do Personagem</h2>
+              <div id="statusContent" class="space-y-2 text-sm"></div>
+              <button
+                id="closeModal"
+                class="mt-4 text-sm text-blue-600 hover:underline"
+                aria-label="Fechar modal de status"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="mt-4 space-x-2">
+            <button
+              id="shopBtn"
+              class="bg-yellow-500 text-white px-4 py-1 rounded"
+            >
+              Loja
+            </button>
+            <button
+              id="bagBtn"
+              class="bg-green-500 text-white px-4 py-1 rounded"
+            >
+              Mochila
+            </button>
+          </div>
+
+          <!-- Modal da Loja -->
+          <div
+            id="shopModal"
+            class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-xl w-96">
+              <h2 class="text-xl font-bold mb-4">Loja de Itens</h2>
+              <ul id="shopItems" class="space-y-2 text-sm"></ul>
+              <button
+                id="closeShop"
+                class="mt-4 text-sm text-blue-600 hover:underline"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+
+          <!-- Modal da Mochila -->
+          <div
+            id="bagModal"
+            class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-xl w-96">
+              <h2 class="text-xl font-bold mb-4">Mochila</h2>
+              <ul id="bagItems" class="space-y-2 text-sm"></ul>
+              <button
+                id="closeBag"
+                class="mt-4 text-sm text-blue-600 hover:underline"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div id="enemy" class="w-1/2 p-4">
+        <div
+          id="enemy"
+          class="w-1/2 p-4 transition-opacity duration-500 opacity-100"
+        >
+          <div class="flex justify-between">
+            <strong class="name">--</strong>
+            <strong class="life">--</strong>
+          </div>
           <div class="lifebar mb-2 h-3 rounded-md border border-black">
             <div
               class="bar h-full rounded-md transition-[width] duration-500"
             ></div>
           </div>
-          <strong class="name mb-2 block">--</strong>
+          <div class="level flex justify-end">--</div>
         </div>
       </div>
-
+      <div class="horde-info text-sm flex items-center flex-col">
+        <div id="hordeNumber">Horda 1</div>
+        <div id="enemiesLeft">Inimigos restantes: 4</div>
+      </div>
       <ul
         class="log m-4 h-52 overflow-y-scroll rounded border-2 border-dotted border-gray-500 bg-gray-100 p-2 text-center"
       ></ul>
